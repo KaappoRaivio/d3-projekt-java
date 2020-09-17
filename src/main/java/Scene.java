@@ -22,19 +22,22 @@ public class Scene {
 
         while (true) {
             for (Process process : processes) {
+                long start = System.currentTimeMillis();
                 entities = process.update(entities, getDeltaTime(), frameCounter);
+                long end = System.currentTimeMillis();
+                System.out.println("Process " + process.getClass() + " took " + (end - start) + " ms");
             }
-            try {
-                Thread.sleep(16);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
+//            try {
+//                Thread.sleep(16);
+//            } catch (InterruptedException e) {
+//                e.printStackTrace();
+//            }
 //            break;
             ++frameCounter;
         }
     }
 
     public double getDeltaTime () {
-        return 0.2;
+        return 0.01;
     }
 }

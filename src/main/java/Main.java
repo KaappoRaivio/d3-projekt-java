@@ -31,20 +31,20 @@ public class Main {
                 )
         ));
         List<Process> processes = Arrays.asList(
-                new Renderer(new Camera(Vector2D.of(0, 0), Vector2D.of(640, 480))),
+                new Renderer(new Camera(Vector2D.of(0, 0), Vector2D.of(1800, 1000))),
                 new Mover(),
                 new Process() {
                     private Random random = new Random();
 
                     @Override
                     public List<Entity> update(List<Entity> entities, double deltaTime, int frameCounter) {
-                        if (frameCounter % 10 == 0) {
+                        if (frameCounter % 3 == 0) {
                             int size = random.nextInt(5) + 5;
                             String path = random.nextBoolean() ? "/home/kaappo/git/d3/src/main/resources/graphics/testrainbow.png"
                                     : "/home/kaappo/git/d3/src/main/resources/graphics/idle0.png";
                             entities.add(new MovableEntity(
-                                        Vector2D.of(random.nextInt(640), random.nextInt(240)),
-                                        Vector2D.of(-20 + random.nextInt(40), -10 - random.nextInt(40)),
+                                        Vector2D.of(random.nextInt(1800), random.nextInt(500)),
+                                        Vector2D.of(-20 + random.nextInt(40), -40 - random.nextInt(20)),
                                         "Added on frame " + frameCounter,
                                         AssetManager.getImage(path),
                                         Vector2D.of(size, size))

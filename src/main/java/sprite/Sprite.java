@@ -16,7 +16,6 @@ public class Sprite {
         this.pixelMatrix = pixelMatrix;
         this.dimensions = Vector2D.of(pixelMatrix[0].length, pixelMatrix.length);
         this.scale = scale;
-        System.out.println(this.dimensions);
     }
 
     public Pixel getPixelAt(Vector2D position) {

@@ -13,7 +13,7 @@ import java.util.List;
 
 public class Renderer implements Process {
     private final Camera camera;
-    volatile private Pixel[][] buffer;
+    volatile private BufferedImage buffer;
 
     private JFrame frame;
     private JPanel panel;
@@ -22,7 +22,7 @@ public class Renderer implements Process {
     public Renderer(Camera camera) {
         this.camera = camera;
         viewportDimensions = camera.getViewportDimensions();
-        this.buffer = new Pixel[viewportDimensions.getJInt()][viewportDimensions.getIInt()];
+        this.buffer = new BufferedImage(viewportDimensions.getIInt(), viewportDimensions.getJInt(), BufferedImage.TYPE_INT_ARGB);
 
         this.frame = new JFrame();
         panel = new MyRenderPanel();
@@ -34,11 +34,12 @@ public class Renderer implements Process {
     }
 
     private void resetBuffer() {
-        for (int y = 0; y < buffer.length; y++) {
-            for (int x = 0; x < buffer[y].length; x++) {
-                buffer[y][x] = new Pixel(0, 0, 0, 0);
-            }
-        }
+//        for (int y = 0; y < buffer.length; y++) {
+//            for (int x = 0; x < buffer[y].length; x++) {
+//                buffer[y][x] = new Pixel(0, 0, 0, 0);
+//            }
+//        }
+        buffer.setRGB(0, 0, buffer.getWidth(), buffer.getHeight(), new int[buffer.getWidth() * buffer.getHeight()], 0, 0);
     }
 
     @Override
@@ -57,11 +58,12 @@ public class Renderer implements Process {
                     for (int x = 0; x < dimensions.getI(); x++) {
                         int bufferY = cameraPosition.getJInt() + entityPosition.getJInt() + y;
                         int bufferX = cameraPosition.getIInt() + entityPosition.getIInt() + x;
-                        if (bufferX < 0 || bufferX >= buffer[0].length
-                                || bufferY < 0 || bufferY >= buffer.length) {
+                        if (bufferX < 0 || bufferX >= buffer.getWidth()
+                                || bufferY < 0 || bufferY >= buffer.getHeight()) {
                             continue;
                         }
-                        buffer[bufferY][bufferX] = buffer[bufferY][bufferX].blend(entitySprite.getPixelAt(Vector2D.of(x, y)));
+                        Pixel pixel = entitySprite.getPixelAt(Vector2D.of(x, y));
+                        buffer.setRGB(bufferX, bufferY, new Color(pixel.getR(), pixel.getG(), pixel.getB(), pixel.getA()).getRGB());
                     }
                 }
             }
@@ -78,6 +80,8 @@ public class Renderer implements Process {
     }
 
     class MyRenderPanel extends JPanel {
+        private BufferedImage image = new BufferedImage(viewportDimensions.getIInt(), viewportDimensions.getJInt(), BufferedImage.TYPE_INT_ARGB);
+
         @Override
         public Dimension getPreferredSize() {
             return new Dimension(viewportDimensions.getIInt(), viewportDimensions.getJInt());
@@ -86,15 +90,17 @@ public class Renderer implements Process {
         @Override
         public void paintComponent(Graphics g) {
             super.paintComponent(g);
-            BufferedImage image = new BufferedImage(viewportDimensions.getIInt(), viewportDimensions.getJInt(), BufferedImage.TYPE_INT_ARGB);
-            for (int y = 0; y < viewportDimensions.getJ(); y++) {
-                for (int x = 0; x < viewportDimensions.getI(); x++) {
-                    Pixel pixel = buffer[y][x];
-                    Color color = new Color(pixel.getR(), pixel.getG(), pixel.getB(), pixel.getA());
-                    image.setRGB(x, y, color.getRGB());
-                }
-            }
-            g.drawImage(image, 0, 0, this);
+            long start = System.currentTimeMillis();
+//            for (int y = 0; y < viewportDimensions.getJ(); y++) {
+//                for (int x = 0; x < viewportDimensions.getI(); x++) {
+//                    Pixel pixel = buffer[y][x];
+//                    Color color = new Color(pixel.getR(), pixel.getG(), pixel.getB(), pixel.getA());
+//                    image.setRGB(x, y, color.getRGB());
+//                }
+//            }
+            g.drawImage(buffer, 0, 0, this);
+            long end = System.currentTimeMillis();
+            System.out.println("Burning took " + (end - start) + " ms");
         }
     }
 }
