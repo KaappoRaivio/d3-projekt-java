@@ -1,0 +1,26 @@
+misc/Vector2D.java
+ misc.Vector2D
+camera/Camera.java
+ camera.Camera
+process/Process.java
+ process.Process
+misc/JavaSucksAtMath.java
+ misc.JavaSucksAtMath
+Scene.java
+ Scene
+misc/TermColor.java
+ misc.TermColor
+Main.java
+ Main
+misc/Pixel.java
+ misc.Pixel
+process/Renderer.java
+ process.Renderer
+entity/Entity.java
+ entity.Entity
+entity/ImmovableEntity.java
+ entity.ImmovableEntity
+assetmanager/AssetManager.java
+ assetmanager.AssetManager
+sprite/Sprite.java
+ sprite.Sprite
