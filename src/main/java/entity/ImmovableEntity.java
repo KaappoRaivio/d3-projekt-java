@@ -12,10 +12,10 @@ public class ImmovableEntity extends Entity {
     private final Sprite sprite;
     private final int id;
 
-    public ImmovableEntity(Vector2D position, String name, Pixel[][] assetMatrix) {
+    public ImmovableEntity(Vector2D position, String name, Sprite sprite) {
         this.position = position;
         this.name = name;
-        this.sprite = new Sprite(assetMatrix);
+        this.sprite = sprite;
         this.id = new Random().nextInt();
     }
 

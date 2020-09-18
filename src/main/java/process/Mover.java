@@ -7,7 +7,7 @@ import java.util.List;
 
 public class Mover implements Process {
     private int counter = 0;
-    private static final Vector2D gravity = new Vector2D(0, 9.81);
+    private static final Vector2D gravity = new Vector2D(0, 1000);
     @Override
     public List<Entity> update(List<Entity> entities, double deltaTime, int frameCounter) {
         ++counter;

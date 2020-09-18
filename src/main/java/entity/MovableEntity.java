@@ -12,22 +12,19 @@ public class MovableEntity extends Entity {
     private Vector2D velocity;
     private Vector2D acceleration;
 
-    public MovableEntity(Vector2D position, String name, Pixel[][] assetMatrix) {
-        this(position, name, assetMatrix, Vector2D.of(1, 1));
+
+    public MovableEntity(Vector2D position, String name, Sprite sprite) {
+        this(position, Vector2D.of(0, 0), Vector2D.of(0, 0), name, sprite);
     }
 
-    public MovableEntity(Vector2D position, String name, Pixel[][] assetMatrix, Vector2D scale) {
-        this(position, Vector2D.of(0, 0), Vector2D.of(0, 0), name, assetMatrix, scale);
+    public MovableEntity(Vector2D position, Vector2D velocity, String name, Sprite sprite) {
+        this(position, velocity, Vector2D.of(0, 0), name, sprite);
     }
 
-    public MovableEntity(Vector2D position, Vector2D velocity, String name, Pixel[][] assetMatrix, Vector2D scale) {
-        this(position, velocity, Vector2D.of(0, 0), name, assetMatrix, scale);
-    }
-
-    public MovableEntity(Vector2D position, Vector2D velocity, Vector2D acceleration, String name, Pixel[][] assetMatrix, Vector2D scale) {
+    public MovableEntity(Vector2D position, Vector2D velocity, Vector2D acceleration, String name, Sprite sprite) {
         this.position = position;
         this.name = name;
-        this.sprite = new Sprite(assetMatrix, scale);
+        this.sprite = sprite;
 
         this.velocity = velocity;
         this.acceleration = acceleration;

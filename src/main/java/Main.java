@@ -1,4 +1,4 @@
-import assetmanager.AssetManager;
+import sprite.AssetManager;
 import camera.Camera;
 import entity.Entity;
 import entity.MovableEntity;
@@ -6,6 +6,8 @@ import misc.Vector2D;
 import process.Mover;
 import process.Process;
 import process.Renderer;
+import scene.Scene;
+import sprite.Sprite;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -19,15 +21,15 @@ public class Main {
                         Vector2D.of(0, 0),
                         Vector2D.of(50, -30),
                         "Testi",
-                        AssetManager.getImage("/home/kaappo/git/d3/src/main/resources/graphics/idle0.png"),
-                        Vector2D.of(20, 20)
+                        new Sprite("/home/kaappo/git/d3/src/main/resources/graphics/idle0.png", Vector2D.of(20, 20))
+
                 ),
                 new MovableEntity(
                         Vector2D.of(580, 0),
                         Vector2D.of(-80, -20),
                         "Testi",
-                        AssetManager.getImage("/home/kaappo/git/d3/src/main/resources/graphics/idle0.png"),
-                        Vector2D.of(10, 10)
+                        new Sprite("/home/kaappo/git/d3/src/main/resources/graphics/idle0.png", Vector2D.of(10, 10))
+
                 )
         ));
         List<Process> processes = Arrays.asList(
@@ -43,11 +45,11 @@ public class Main {
                             String path = random.nextBoolean() ? "/home/kaappo/git/d3/src/main/resources/graphics/testrainbow.png"
                                     : "/home/kaappo/git/d3/src/main/resources/graphics/idle0.png";
                             entities.add(new MovableEntity(
-                                        Vector2D.of(random.nextInt(1800), random.nextInt(500)),
-                                        Vector2D.of(-20 + random.nextInt(40), -40 - random.nextInt(20)),
+                                        Vector2D.of(random.nextInt(1800), random.nextInt(1000)),
+                                        Vector2D.of(-20 + random.nextInt(40), -1000),
                                         "Added on frame " + frameCounter,
-                                        AssetManager.getImage(path),
-                                        Vector2D.of(size, size))
+                                        new Sprite(path, Vector2D.of(size, size))
+                                )
                             );
                         }
                         return entities;

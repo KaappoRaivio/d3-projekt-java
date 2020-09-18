@@ -9,6 +9,8 @@ import sprite.Sprite;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class Renderer implements Process {
@@ -18,6 +20,8 @@ public class Renderer implements Process {
     private JFrame frame;
     private JPanel panel;
     private Vector2D viewportDimensions;
+
+    private List<Entity> entities = Collections.emptyList();
 
     public Renderer(Camera camera) {
         this.camera = camera;
@@ -46,28 +50,29 @@ public class Renderer implements Process {
     public List<Entity> update(List<Entity> entities, double deltaTime, int frameCounter) {
         this.resetBuffer();
 
-        entities.forEach(entity -> {
-            Vector2D entityPosition = entity.getPosition();
-            Vector2D entitySize = entity.getSprite().getDimensions();
-
-            Vector2D cameraPosition = camera.getCameraPosition();
-            if (camera.isVisibleInViewport(entityPosition, entitySize)) {
-                Sprite entitySprite = entity.getSprite();
-                Vector2D dimensions = entitySprite.getDimensions();
-                for (int y = 0; y < dimensions.getJ(); y++) {
-                    for (int x = 0; x < dimensions.getI(); x++) {
-                        int bufferY = cameraPosition.getJInt() + entityPosition.getJInt() + y;
-                        int bufferX = cameraPosition.getIInt() + entityPosition.getIInt() + x;
-                        if (bufferX < 0 || bufferX >= buffer.getWidth()
-                                || bufferY < 0 || bufferY >= buffer.getHeight()) {
-                            continue;
-                        }
-                        Pixel pixel = entitySprite.getPixelAt(Vector2D.of(x, y));
-                        buffer.setRGB(bufferX, bufferY, new Color(pixel.getR(), pixel.getG(), pixel.getB(), pixel.getA()).getRGB());
-                    }
-                }
-            }
-        });
+        this.entities = entities;
+//        entities.forEach(entity -> {
+//            Vector2D entityPosition = entity.getPosition();
+//            Vector2D entitySize = entity.getSprite().getDimensions();
+//
+//            Vector2D cameraPosition = camera.getCameraPosition();
+//            if (camera.isVisibleInViewport(entityPosition, entitySize)) {
+//                Sprite entitySprite = entity.getSprite();
+//                Vector2D dimensions = entitySprite.getDimensions();
+//                for (int y = 0; y < dimensions.getJ(); y++) {
+//                    for (int x = 0; x < dimensions.getI(); x++) {
+//                        int bufferY = cameraPosition.getJInt() + entityPosition.getJInt() + y;
+//                        int bufferX = cameraPosition.getIInt() + entityPosition.getIInt() + x;
+//                        if (bufferX < 0 || bufferX >= buffer.getWidth()
+//                                || bufferY < 0 || bufferY >= buffer.getHeight()) {
+//                            continue;
+//                        }
+//                        Pixel pixel = entitySprite.getPixelAt(Vector2D.of(x, y));
+//                        buffer.setRGB(bufferX, bufferY, new Color(pixel.getR(), pixel.getG(), pixel.getB(), pixel.getA()).getRGB());
+//                    }
+//                }
+//            }
+//        });
         EventQueue.invokeLater(() -> {
             panel.repaint();
             frame.repaint();
@@ -80,8 +85,6 @@ public class Renderer implements Process {
     }
 
     class MyRenderPanel extends JPanel {
-        private BufferedImage image = new BufferedImage(viewportDimensions.getIInt(), viewportDimensions.getJInt(), BufferedImage.TYPE_INT_ARGB);
-
         @Override
         public Dimension getPreferredSize() {
             return new Dimension(viewportDimensions.getIInt(), viewportDimensions.getJInt());
@@ -98,7 +101,18 @@ public class Renderer implements Process {
 //                    image.setRGB(x, y, color.getRGB());
 //                }
 //            }
-            g.drawImage(buffer, 0, 0, this);
+
+//            g.drawImage(buffer, 0, 0, this);
+            entities.forEach(entity -> {
+                Vector2D entityPosition = entity.getPosition();
+                g.drawImage(
+                        entity.getSprite().getOriginalImage(),
+                        entityPosition.getIInt(),
+                        entityPosition.getJInt(),
+                        entity.getSprite().getDimensions().getIInt(),
+                        entity.getSprite().getDimensions().getJInt(),
+                        this);
+            });
             long end = System.currentTimeMillis();
             System.out.println("Burning took " + (end - start) + " ms");
         }

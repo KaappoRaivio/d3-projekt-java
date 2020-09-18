@@ -1,9 +1,8 @@
-package assetmanager;
+package sprite;
 
 import misc.Pixel;
 import misc.TermColor;
 import misc.Vector2D;
-import sprite.Sprite;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
@@ -12,7 +11,7 @@ import java.io.File;
 import java.io.IOException;
 
 public class AssetManager {
-    public static Pixel[][] getImage (String path) {
+    public static BufferedImage getImage (String path) {
         File imageFile = new File(path);
         BufferedImage image;
         try {
@@ -20,6 +19,10 @@ public class AssetManager {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+        return image;
+    }
+    public static Pixel[][] getPixels(BufferedImage image) {
+
 
         int imageWidth = image.getWidth();
         int imageHeight = image.getHeight();
@@ -61,7 +64,7 @@ public class AssetManager {
 
     public static void main(String[] args) {
 //        Pixel[][] image = AssetManager.getImage("/home/kaappo/git/d3/src/main/resources/graphics/testrainbow.png");
-        Pixel[][] image = AssetManager.getImage("/home/kaappo/git/d3/src/main/resources/graphics/idle0.png");
+        Pixel[][] image = AssetManager.getPixels(AssetManager.getImage("/home/kaappo/git/d3/src/main/resources/graphics/idle0.png"));
 //        System.out.println(image[4][3]);
         AssetManager.printImage(image);
     }
