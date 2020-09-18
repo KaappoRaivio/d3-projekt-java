@@ -13,13 +13,8 @@ public class Mover implements Process {
         ++counter;
         for (Entity entity : entities) {
             if (entity.isMovable()) {
-//                System.out.println(entity);
-//                System.out.println(entity.getAcceleration().add(gravity));
-//                System.out.println("Velocity: " + entity.getVelocity().add((entity.getAcceleration().add(gravity).multiply(deltaTime))));
                 entity.setVelocity(entity.getVelocity().add((entity.getAcceleration().add(gravity).multiply(deltaTime))));
-//                System.out.println("Position: " + entity.getPosition().add(entity.getVelocity().multiply(deltaTime)));
                 entity.setPosition(entity.getPosition().add(entity.getVelocity().multiply(deltaTime)));
-//                System.out.println(entity);
             }
         }
 

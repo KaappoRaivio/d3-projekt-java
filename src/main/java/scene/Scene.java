@@ -40,7 +40,6 @@ public class Scene {
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
-//            break;
             ++frameCounter;
         }
     }

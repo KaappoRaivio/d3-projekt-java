@@ -13,10 +13,11 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 public class Main {
     public static void main(String[] args) {
-        List<Entity> entities = new ArrayList<>(Arrays.asList(
+        List<Entity> entities = new CopyOnWriteArrayList<>(Arrays.asList(
                 new MovableEntity(
                         Vector2D.of(0, 0),
                         Vector2D.of(50, -30),
@@ -40,18 +41,16 @@ public class Main {
 
                     @Override
                     public List<Entity> update(List<Entity> entities, double deltaTime, int frameCounter) {
-                        if (frameCounter % 3 == 0) {
-                            int size = random.nextInt(5) + 5;
-                            String path = random.nextBoolean() ? "/home/kaappo/git/d3/src/main/resources/graphics/testrainbow.png"
-                                    : "/home/kaappo/git/d3/src/main/resources/graphics/idle0.png";
-                            entities.add(new MovableEntity(
-                                        Vector2D.of(random.nextInt(1800), random.nextInt(1000)),
-                                        Vector2D.of(-20 + random.nextInt(40), -1000),
-                                        "Added on frame " + frameCounter,
-                                        new Sprite(path, Vector2D.of(size, size))
-                                )
-                            );
-                        }
+                        int size = random.nextInt(5) + 5;
+                        String path = random.nextBoolean() ? "/home/kaappo/git/d3/src/main/resources/graphics/idle0.png"
+                                : "/home/kaappo/git/d3/src/main/resources/graphics/idle0.png";
+                        entities.add(new MovableEntity(
+                                    Vector2D.of(random.nextInt(1800), random.nextInt(1000)),
+                                    Vector2D.of(-20 + random.nextInt(40), -300),
+                                    "Added on frame " + frameCounter,
+                                    new Sprite(path, Vector2D.of(size, size))
+                            )
+                        );
                         return entities;
                     }
                 }
