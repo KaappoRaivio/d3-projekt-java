@@ -2,14 +2,11 @@ package process;
 
 import camera.Camera;
 import entity.Entity;
-import misc.Pixel;
 import misc.Vector2D;
-import sprite.Sprite;
+import scene.Scene;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.image.BufferedImage;
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -40,7 +37,7 @@ public class Renderer implements Process {
     }
 
     @Override
-    public List<Entity> update(List<Entity> entities, double deltaTime, int frameCounter) {
+    public List<Entity> update(Scene Scene, List<Entity> entities, double deltaTime, int frameCounter) {
         this.resetBuffer();
 
         synchronized (lock) {
