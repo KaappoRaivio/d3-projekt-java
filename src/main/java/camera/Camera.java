@@ -28,4 +28,12 @@ public class Camera {
 
         return topLeft && bottomRight;
     }
+
+    public void setCameraPosition (Vector2D cameraPosition) {
+        this.cameraPosition = cameraPosition.add(viewportDimensions.multiply(-0.5));
+    }
+
+    public void setViewportDimensions (Vector2D viewportDimensions) {
+        this.viewportDimensions = viewportDimensions;
+    }
 }

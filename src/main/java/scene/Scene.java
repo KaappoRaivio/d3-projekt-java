@@ -5,6 +5,7 @@ import misc.Vector2D;
 import process.Process;
 
 import java.util.List;
+import java.util.Scanner;
 
 public class Scene {
     private List<Entity> entities;
@@ -35,6 +36,7 @@ public class Scene {
             entities = process.update(this, entities, deltaTime, 0);
         }
 //        new Scanner(System.in).nextLine();
+//        timer.start();
 
         for (int frameCounter = 1; frameCounter != times; ++frameCounter) {
             deltaTime = timer.getDeltaTime();
@@ -50,7 +52,6 @@ public class Scene {
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
-            ++frameCounter;
         }
     }
 }

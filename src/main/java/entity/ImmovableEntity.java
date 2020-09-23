@@ -1,5 +1,6 @@
 package entity;
 
+import misc.NonZero;
 import misc.Pixel;
 import misc.Vector2D;
 import sprite.Sprite;
@@ -47,6 +48,21 @@ public class ImmovableEntity extends Entity {
     @Override
     public void setAcceleration(Vector2D newAcceleration) {
 
+    }
+
+    @Override
+    public boolean collisionsEnabled() {
+        return true;
+    }
+
+    @Override
+    public Vector2D getCenterPoint() {
+        return position.add(sprite.getDimensions().divide(2));
+    }
+
+    @Override
+    public @NonZero double getMass() {
+        return 1;
     }
 
     @Override

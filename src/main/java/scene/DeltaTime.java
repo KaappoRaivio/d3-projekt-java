@@ -17,5 +17,6 @@ public class DeltaTime {
         start = end;
         System.out.printf("FPS: %.2f\n", 1 / result);
         return result;
+//        return 0.010;
     }
 }

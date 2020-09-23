@@ -1,5 +1,6 @@
 package entity;
 
+import misc.NonZero;
 import misc.Vector2D;
 import sprite.Sprite;
 
@@ -14,6 +15,10 @@ public abstract class Entity {
     public abstract void setVelocity(Vector2D newVelocity);
     public abstract Vector2D getAcceleration();
     public abstract void setAcceleration(Vector2D newAcceleration);
+    public abstract boolean collisionsEnabled ();
+    public abstract Vector2D getCenterPoint ();
+
+    public abstract @NonZero double getMass ();
 
     @Override
     public String toString () {

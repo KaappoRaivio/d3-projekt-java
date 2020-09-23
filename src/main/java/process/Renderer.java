@@ -14,9 +14,9 @@ public class Renderer implements Process {
     private final Object lock = new Object();
     private final Camera camera;
 
-    private JFrame frame;
-    private JPanel panel;
-    private Vector2D viewportDimensions;
+    private final JFrame frame;
+    private final JPanel panel;
+    private final Vector2D viewportDimensions;
 
     private List<Entity> entities = Collections.emptyList();
 
@@ -71,14 +71,19 @@ public class Renderer implements Process {
 //            g.drawImage(buffer, 0, 0, this);
             synchronized (lock) {
                 entities.forEach(entity -> {
-                    Vector2D entityPosition = entity.getPosition();
-                    g.drawImage(
-                            entity.getSprite().getOriginalImage(),
-                            entityPosition.getIInt(),
-                            entityPosition.getJInt(),
-                            entity.getSprite().getDimensions().getIInt(),
-                            entity.getSprite().getDimensions().getJInt(),
-                            this);
+//                    if (entity.getName().equalsIgnoreCase("small")) {
+//                        camera.setCameraPosition(entity.getPosition());
+//                    }
+                    if (camera.isVisibleInViewport(entity.getPosition(), entity.getSprite().getDimensions())) {
+                        Vector2D entityPosition = entity.getPosition().add(camera.getCameraPosition().multiply(-1));
+                        g.drawImage(
+                                entity.getSprite().getOriginalImage(),
+                                entityPosition.getIInt(),
+                                entityPosition.getJInt(),
+                                entity.getSprite().getDimensions().getIInt(),
+                                entity.getSprite().getDimensions().getJInt(),
+                                this);
+                    }
                 });
             }
             long end = System.currentTimeMillis();
