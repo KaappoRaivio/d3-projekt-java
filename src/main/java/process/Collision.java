@@ -25,7 +25,7 @@ public class Collision implements Process {
     }
 
     @Override
-    public List<Entity> update(Scene scene, List<Entity> entities, double deltaTime, int frameCounter, Function<Event, Void> dispatchEvent) {
+    public Set<Entity> update(Scene scene, Set<Entity> entities, double deltaTime, int frameCounter, Function<Event, Void> dispatchEvent) {
         Map<String, List<Entity>> tiles = new HashMap<>();
 
         int step = 100;
@@ -51,12 +51,12 @@ public class Collision implements Process {
         System.out.println("TRUE COLLISIONS: " + trueCollisions);
 
         trueCollisions.forEach(collision -> dispatchEvent.apply(new CollisionEvent(collision)));
-        
+
         return entities;
     }
 
     @Override
-    public void onEvent(Event event) {
+    public void onEvent(Event event, Function<Event, Void> dispatchEvent) {
 
     }
 

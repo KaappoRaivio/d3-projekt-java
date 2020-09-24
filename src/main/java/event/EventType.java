@@ -1,5 +1,5 @@
 package event;
 
 public enum  EventType {
-    COLLISION, HALT, DAMAGE;
+    COLLISION, HALT, DAMAGE, KILL;
 }

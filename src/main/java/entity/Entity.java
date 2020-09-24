@@ -18,7 +18,7 @@ public abstract class Entity {
     public abstract boolean collisionsEnabled ();
     public abstract Vector2D getCenterPoint ();
 
-    public abstract @NonZero double getMass ();
+    public abstract EntityProperties getEntityProperties ();
 
     @Override
     public String toString () {

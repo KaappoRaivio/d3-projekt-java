@@ -4,20 +4,20 @@ import entity.Entity;
 import event.Event;
 import event.EventDispatcher;
 import misc.Vector2D;
-import process.Collision;
 import process.Process;
 
 import java.util.List;
+import java.util.Set;
 import java.util.function.Function;
 
 public class Scene {
-    private List<Entity> entities;
+    private Set<Entity> entities;
     private List<Process> processes;
     private Vector2D maxSize;
     private DeltaTime timer;
     private EventDispatcher dispatcher;
 
-    public Scene(List<Entity> entities, List<Process> processes, Vector2D maxSize) {
+    public Scene(Set<Entity> entities, List<Process> processes, Vector2D maxSize) {
         this.entities = entities;
         this.processes = processes;
         this.maxSize = maxSize;
@@ -63,7 +63,7 @@ public class Scene {
                 e.printStackTrace();
             }
 
-            System.out.println("COLLISIONS: " + ((Collision) processes.get(2)).getAmountOfCollisions());
+//            System.out.println("COLLISIONS: " + ((Collision) processes.get(2)).getAmountOfCollisions());
         }
     }
 }

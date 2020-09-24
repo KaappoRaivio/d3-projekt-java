@@ -12,6 +12,7 @@ import java.awt.*;
 import java.awt.event.WindowEvent;
 import java.util.Collections;
 import java.util.List;
+import java.util.Set;
 import java.util.function.Function;
 
 public class Renderer implements Process {
@@ -22,7 +23,9 @@ public class Renderer implements Process {
     private final JPanel panel;
     private final Vector2D viewportDimensions;
 
-    private List<Entity> entities = Collections.emptyList();
+    private Set<Entity> entities = Collections.emptySet();
+
+    private int frameCounter = 0;
 
     public Renderer(Camera camera) {
         this.camera = camera;
@@ -41,8 +44,9 @@ public class Renderer implements Process {
     }
 
     @Override
-    public List<Entity> update(Scene Scene, List<Entity> entities, double deltaTime, int frameCounter, Function<Event, Void> dispatchEvent) {
+    public Set<Entity> update(Scene Scene, Set<Entity> entities, double deltaTime, int frameCounter, Function<Event, Void> dispatchEvent) {
         this.resetBuffer();
+        this.frameCounter = frameCounter;
 
         synchronized (lock) {
             this.entities = entities;
@@ -55,7 +59,7 @@ public class Renderer implements Process {
     }
 
     @Override
-    public void onEvent(Event event) {
+    public void onEvent(Event event, Function<Event, Void> dispatchEvent) {
         if (event.getEventType() == EventType.HALT) {
             EventQueue.invokeLater(() -> {
                 frame.dispatchEvent(new WindowEvent(frame, WindowEvent.WINDOW_CLOSING));
@@ -83,8 +87,9 @@ public class Renderer implements Process {
 
 //            g.drawImage(buffer, 0, 0, this);
             synchronized (lock) {
+                g.drawString("Frame " + frameCounter, 100, 100);
                 entities.forEach(entity -> {
-//                    if (entity.getName().equalsIgnoreCase("small")) {
+//                    if (entity.getName().equalsIgnoreCase("focus")) {
 //                        camera.setCameraPosition(entity.getPosition());
 //                    }
                     if (camera.isVisibleInViewport(entity.getPosition(), entity.getSprite().getDimensions())) {
@@ -96,6 +101,14 @@ public class Renderer implements Process {
                                 entity.getSprite().getDimensions().getIInt(),
                                 entity.getSprite().getDimensions().getJInt(),
                                 this);
+
+                        g.drawString(entity.getPosition() + ", " + entity.getVelocity(), entityPosition.getIInt(), entityPosition.getJInt());
+
+                        g.drawRect(
+                                entityPosition.getIInt(),
+                                entityPosition.getJInt(),
+                                entity.getSprite().getDimensions().getIInt(),
+                                entity.getSprite().getDimensions().getJInt());
                     }
                 });
             }

@@ -10,28 +10,27 @@ import java.util.Random;
 
 public class MovableEntity extends Entity {
     private static final Random RANDOM = new Random();
-    private Sprite sprite;
-    private String name;
-    private int id;
+    private final Sprite sprite;
+    private final String name;
+    private final int id;
     private Vector2D position;
     private Vector2D velocity;
     private Vector2D acceleration;
-    private final double mass;
-
+    private final EntityProperties entityProperties;
 
     public MovableEntity(Vector2D position, String name, Sprite sprite) {
-        this(position, name, sprite, 1);
+        this(position, name, sprite, new EntityProperties(1,  1));
     }
 
-    public MovableEntity(Vector2D position, String name, Sprite sprite, double mass) {
-        this(position, Vector2D.of(0, 0), Vector2D.of(0, 0), name, sprite, mass);
+    public MovableEntity(Vector2D position, String name, Sprite sprite, EntityProperties entityProperties) {
+        this(position, Vector2D.of(0, 0), name, sprite, entityProperties);
     }
 
-    public MovableEntity(Vector2D position, Vector2D velocity, String name, Sprite sprite, double mass) {
-        this(position, velocity, Vector2D.of(0, 0), name, sprite, mass);
+    public MovableEntity(Vector2D position, Vector2D velocity, String name, Sprite sprite, EntityProperties entityProperties) {
+        this(position, velocity, Vector2D.of(0, 0), name, sprite, entityProperties);
     }
 
-    public MovableEntity(Vector2D position, Vector2D velocity, Vector2D acceleration, String name, Sprite sprite, double mass) {
+    public MovableEntity(Vector2D position, Vector2D velocity, Vector2D acceleration, String name, Sprite sprite, EntityProperties entityProperties) {
         this.position = position;
         this.name = name;
         this.sprite = sprite;
@@ -39,7 +38,8 @@ public class MovableEntity extends Entity {
         this.velocity = velocity;
         this.acceleration = acceleration;
         this.id = RANDOM.nextInt();
-        this.mass = mass;
+
+        this.entityProperties = entityProperties;
     }
 
     @Override
@@ -104,8 +104,8 @@ public class MovableEntity extends Entity {
     }
 
     @Override
-    public @NonZero double getMass() {
-        return mass;
+    public EntityProperties getEntityProperties() {
+        return entityProperties;
     }
 
     @Override
