@@ -1,22 +1,31 @@
 package process;
 
 import entity.Entity;
+import event.CollisionEvent;
+import event.Event;
 import misc.GeoHash;
 import misc.Vector2D;
 import scene.Scene;
 
 import java.util.*;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 public class Collision implements Process {
     private GeoHash geoHash;
+
+    public int getAmountOfCollisions() {
+        return amountOfCollisions;
+    }
+
+    private int amountOfCollisions = 0;
 
     public Collision (Vector2D maxSize) {
         this.geoHash = new GeoHash(maxSize, 16, -3);
     }
 
     @Override
-    public List<Entity> update(Scene scene, List<Entity> entities, double deltaTime, int frameCounter) {
+    public List<Entity> update(Scene scene, List<Entity> entities, double deltaTime, int frameCounter, Function<Event, Void> dispatchEvent) {
         Map<String, List<Entity>> tiles = new HashMap<>();
 
         int step = 100;
@@ -41,37 +50,34 @@ public class Collision implements Process {
         Set<List<Entity>> trueCollisions = trueCollisions(coarseCollisions);
         System.out.println("TRUE COLLISIONS: " + trueCollisions);
 
-        trueCollisions.forEach(collision -> {
-            Entity entity1 = collision.get(0);
-            Entity entity2 = collision.get(1);
-
-            if (!entity1.isMovable()) {
-                entity2.setVelocity(entity2.getVelocity().multiply(-1));
-                return;
-            } else if (!entity2.isMovable()) {
-                entity1.setVelocity(entity1.getVelocity().multiply(-1));
-                return;
-            }
-
-            Vector2D u1 = entity1.getVelocity();
-            Vector2D u2 = entity2.getVelocity();
-
-            double m1 = entity1.getMass();
-            double m2 = entity2.getMass();
-
-            Vector2D v1 = u1.multiply((m1 - m2) / (m1 + m2)).add(u2.multiply(2 / (m1 + m2) * m2));
-            Vector2D v2 = u1.multiply(2 / (m1 + m2) * m1).add(u2.multiply((m2 - m1) / (m1 + m2)));
-
-            entity1.setVelocity(v1);
-            entity2.setVelocity(v2);
-        });
-
+        trueCollisions.forEach(collision -> dispatchEvent.apply(new CollisionEvent(collision)));
+        
         return entities;
     }
 
+    @Override
+    public void onEvent(Event event) {
+
+    }
+
+    private List<List<Entity>> individualPairs(List<Entity> list) {
+        Set<List<Entity>> pairs = new HashSet<>();
+
+        for (Entity entity1 : list) {
+            for (Entity entity2 : list) {
+                if (!entity1.equals(entity2) && !pairs.contains(Arrays.asList(entity1, entity2)) && !pairs.contains(Arrays.asList(entity2, entity1))) {
+                    pairs.add(Arrays.asList(entity1, entity2));
+                }
+            }
+        }
+
+        return new ArrayList<>(pairs);
+    }
+
     private Set<List<Entity>> trueCollisions (Set<List<Entity>> coarseCollisions) {
-        return coarseCollisions
+        Set<List<Entity>> collection = coarseCollisions
                 .stream()
+                .flatMap(list -> individualPairs(list).stream())
                 .filter(collision -> {
                     Entity entity1 = collision.get(0);
                     Entity entity2 = collision.get(1);
@@ -83,7 +89,7 @@ public class Collision implements Process {
                     double endX2 = entity2.getPosition().add(entity2.getSprite().getDimensions()).getI();
 
                     boolean xCollision = startX1 < startX2 && endX1 > startX2
-                                      || startX1 < endX2 && endX1 > startX2;
+                            || startX1 < endX2 && endX1 > startX2;
 
                     double startY1 = entity1.getPosition().getJ();
                     double endY1 = entity1.getPosition().add(entity1.getSprite().getDimensions()).getJ();
@@ -97,5 +103,9 @@ public class Collision implements Process {
                     return xCollision && yCollision;
                 })
                 .collect(Collectors.toSet());
+
+        amountOfCollisions += collection.size();
+
+        return collection;
     }
 }

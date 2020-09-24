@@ -2,13 +2,17 @@ package process;
 
 import camera.Camera;
 import entity.Entity;
+import event.EventType;
 import misc.Vector2D;
 import scene.Scene;
+import event.Event;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.WindowEvent;
 import java.util.Collections;
 import java.util.List;
+import java.util.function.Function;
 
 public class Renderer implements Process {
     private final Object lock = new Object();
@@ -37,7 +41,7 @@ public class Renderer implements Process {
     }
 
     @Override
-    public List<Entity> update(Scene Scene, List<Entity> entities, double deltaTime, int frameCounter) {
+    public List<Entity> update(Scene Scene, List<Entity> entities, double deltaTime, int frameCounter, Function<Event, Void> dispatchEvent) {
         this.resetBuffer();
 
         synchronized (lock) {
@@ -48,6 +52,15 @@ public class Renderer implements Process {
             frame.repaint();
         });
         return entities;
+    }
+
+    @Override
+    public void onEvent(Event event) {
+        if (event.getEventType() == EventType.HALT) {
+            EventQueue.invokeLater(() -> {
+                frame.dispatchEvent(new WindowEvent(frame, WindowEvent.WINDOW_CLOSING));
+            });
+        }
     }
 
     class MyRenderPanel extends JPanel {
