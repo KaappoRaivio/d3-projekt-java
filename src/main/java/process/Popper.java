@@ -18,13 +18,13 @@ public class Popper implements Process {
     }
 
     @Override
-    public void onEvent(Event event, Function<Event, Void> dispatchEvent) {
+    public void onEvent(Event event, Function<Event, Void> dispatchEvent, Set<Entity> entities) {
         if (event.getEventType() == EventType.COLLISION) {
             List<Entity> collidingEntities = ((CollisionEvent) event).getCollidingEntities();
             Entity entity1 = collidingEntities.get(0);
             Entity entity2 = collidingEntities.get(1);
 
-            if (entity1.getVelocity().length() > entity2.getVelocity().length()) {
+            if (entity1.getVelocity().length() > entity2.getVelocity().length() || !entity2.isMovable()) {
                 entity1.setPosition(getNewPosition(entity2, entity1));
             } else {
                 entity2.setPosition(getNewPosition(entity1, entity2));

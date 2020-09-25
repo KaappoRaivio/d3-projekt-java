@@ -1,8 +1,9 @@
 package event;
 
 import java.util.List;
-import java.util.function.Function;
+import java.util.Set;
 
+import entity.Entity;
 import process.Process;
 
 public class EventDispatcher {
@@ -12,8 +13,8 @@ public class EventDispatcher {
         this.processes = processes;
     }
 
-    public Void onEvent(Event event) {
-        processes.forEach(process -> process.onEvent(event, this::onEvent));
+    public Void onEvent(Set<Entity> entities, Event event) {
+        processes.forEach(process -> process.onEvent(event, event1 -> onEvent(entities, event1), entities));
         return null;
     }
 }

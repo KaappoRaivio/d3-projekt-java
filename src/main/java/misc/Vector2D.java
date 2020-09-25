@@ -94,4 +94,8 @@ public class Vector2D {
     public int hashCode() {
         return Objects.hash(i, j);
     }
+
+    public Vector2D toPowerOf(int n) {
+        return Vector2D.of(Math.pow(i, n), Math.pow(j, n));
+    }
 }

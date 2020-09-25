@@ -15,13 +15,13 @@ public class Killer implements Process {
 
     @Override
     public Set<Entity> update(Scene scene, Set<Entity> entities, double deltaTime, int frameCounter, Function<Event, Void> dispatchEvent) {
-        toBeKilled.forEach(entities::remove);
-        toBeKilled.clear();
+//        toBeKilled.forEach(entities::remove);
+//        toBeKilled.clear();
         return entities;
     }
 
     @Override
-    public void onEvent(Event event, Function<Event, Void> dispatchEvent) {
+    public void onEvent(Event event, Function<Event, Void> dispatchEvent, Set<Entity> entities) {
         if (event.getEventType() == EventType.KILL) {
             toBeKilled.add(((KillEvent) event).getKilledEntity());
         }

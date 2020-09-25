@@ -39,7 +39,7 @@ public class Scene {
         double deltaTime = timer.getDeltaTime();
 
         Function<Event, Void> onEvent = event -> {
-            dispatcher.onEvent(event);
+            dispatcher.onEvent(entities, event);
 //            System.out.println(event + ", " + event.getEventType());
             return null;
         };
@@ -51,7 +51,7 @@ public class Scene {
 //        timer.start();
         for (int frameCounter = 1; frameCounter != times; ++frameCounter) {
             deltaTime = timer.getDeltaTime();
-            System.out.println("Current deltaTime: " + deltaTime);
+//            System.out.println("Current deltaTime: " + deltaTime);
             for (Process process : processes) {
                 long start = System.currentTimeMillis();
                 entities = process.update(this, entities, deltaTime, frameCounter, onEvent);

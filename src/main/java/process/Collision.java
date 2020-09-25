@@ -46,9 +46,9 @@ public class Collision implements Process {
                 .filter(key -> tiles.get(key).size() > 1)
                 .map(tiles::get)
                 .collect(Collectors.toSet());
-        System.out.println("\n\nCOLLISIONS: " + coarseCollisions);
+//        System.out.println("\n\nCOLLISIONS: " + coarseCollisions);
         Set<List<Entity>> trueCollisions = trueCollisions(coarseCollisions);
-        System.out.println("TRUE COLLISIONS: " + trueCollisions);
+//        System.out.println("TRUE COLLISIONS: " + trueCollisions);
 
         trueCollisions.forEach(collision -> dispatchEvent.apply(new CollisionEvent(collision)));
 
@@ -56,7 +56,7 @@ public class Collision implements Process {
     }
 
     @Override
-    public void onEvent(Event event, Function<Event, Void> dispatchEvent) {
+    public void onEvent(Event event, Function<Event, Void> dispatchEvent, Set<Entity> entities) {
 
     }
 

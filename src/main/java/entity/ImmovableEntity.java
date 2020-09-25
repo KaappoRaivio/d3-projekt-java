@@ -24,18 +24,18 @@ public class ImmovableEntity extends MovableEntity {
 
     @Override
     public void setPosition(Vector2D newPosition) {
-        throw new RuntimeException("Cannot set position of an Immovable entity!");
+//        throw new RuntimeException("Cannot set position of an Immovable entity!");
     }
 
     @Override
     public void setVelocity(Vector2D newVelocity) {
-        throw new RuntimeException("Cannot set velocity of an Immovable entity!");
+//        throw new RuntimeException("Cannot set velocity of an Immovable entity!");
 
     }
 
     @Override
     public void setAcceleration(Vector2D newAcceleration) {
-        throw new RuntimeException("Cannot set acceleration of an Immovable entity!");
+//        throw new RuntimeException("Cannot set acceleration of an Immovable entity!");
     }
 }
 //public class ImmovableEntity extends Entity {
